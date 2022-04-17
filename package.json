@@ -1,0 +1,20 @@
+{
+  "name": "my-app",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start"
+  },
+  "dependencies": {
+    "core-js": "^2.6.12",
+    "gsap": "^3.10.3",
+    "nuxt": "^2.13.3",
+    "three": "^0.134.0",
+    "troisjs": "^0.3.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.12.3",
+    "nuxt-gsap-module": "^1.7.0"
+  }
+}

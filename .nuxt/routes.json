@@ -1,0 +1,79 @@
+[
+  {
+    "name": "base",
+    "path": "/base",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/base.vue",
+    "chunkName": "pages/base",
+    "_name": "_0ae1473f"
+  },
+  {
+    "name": "test",
+    "path": "/test",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/test.vue",
+    "chunkName": "pages/test",
+    "_name": "_2d22bc80"
+  },
+  {
+    "name": "Exploration-exp1-cube9x",
+    "path": "/Exploration/exp1-cube9x",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/Exploration/exp1-cube9x.vue",
+    "chunkName": "pages/Exploration/exp1-cube9x",
+    "_name": "_c976b2fa"
+  },
+  {
+    "name": "Exploration-exp2-cubeParticlesAnimation",
+    "path": "/Exploration/exp2-cubeParticlesAnimation",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/Exploration/exp2-cubeParticlesAnimation.vue",
+    "chunkName": "pages/Exploration/exp2-cubeParticlesAnimation",
+    "_name": "_95d4ec0c"
+  },
+  {
+    "name": "Exploration-exp3-postGsap",
+    "path": "/Exploration/exp3-postGsap",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/Exploration/exp3-postGsap.vue",
+    "chunkName": "pages/Exploration/exp3-postGsap",
+    "_name": "_6c60cd08"
+  },
+  {
+    "name": "Exploration-exp4",
+    "path": "/Exploration/exp4",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/Exploration/exp4.vue",
+    "chunkName": "pages/Exploration/exp4",
+    "_name": "_db74b69e"
+  },
+  {
+    "name": "TechnicalExemple-box",
+    "path": "/TechnicalExemple/box",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/TechnicalExemple/box.vue",
+    "chunkName": "pages/TechnicalExemple/box",
+    "_name": "_09ddfa9b"
+  },
+  {
+    "name": "TechnicalExemple-line",
+    "path": "/TechnicalExemple/line",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/TechnicalExemple/line.vue",
+    "chunkName": "pages/TechnicalExemple/line",
+    "_name": "_15c4d058"
+  },
+  {
+    "name": "TechnicalExemple-pointsMaterial",
+    "path": "/TechnicalExemple/pointsMaterial",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/TechnicalExemple/pointsMaterial.vue",
+    "chunkName": "pages/TechnicalExemple/pointsMaterial",
+    "_name": "_1f22760a"
+  },
+  {
+    "name": "TechnicalExemple-postprocessing",
+    "path": "/TechnicalExemple/postprocessing",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/TechnicalExemple/postprocessing.vue",
+    "chunkName": "pages/TechnicalExemple/postprocessing",
+    "_name": "_0c9af613"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/francis/Documents/GitHub/ThreeNuxtBoiler/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_dfeae258"
+  }
+]
