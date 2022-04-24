@@ -1,176 +1,135 @@
 <template>
 <!--   <h1>Base</h1> -->
+
 <div>
-  <canvas class="webgl"></canvas>
+  <!-- <canvas class="webgl"></canvas> -->
+  <div id ="canvas"></div>
+  <div class="plane">
+    <img src="https://img.francis-lamontagne.com/nadia.jpg"/>
+  </div>
+  
 </div>
 </template>
 
-		
+	
 
 <script>
+import {Curtains, Plane} from 'curtainsjs';
 
-import gsap from "gsap";
-import * as THREE from 'three'
-import Stats from 'three/examples/jsm/libs/stats.module'
-
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
-import { DotScreenShader } from 'three/examples/jsm/shaders/DotScreenShader.js';
-
-
-
-
-//console.log("gsap:", gsap)
 
 
 export default {
-
-    mounted(){
+mounted(){
+  // wait for everything to be ready
+window.addEventListener("load", () => {
+// set up our WebGL context and append the canvas to our wrapper
+const curtains = new Curtains({
+container: "canvas"
+});
+// get our plane element
+const planeElement = document.getElementsByClassName("plane")[0];
+// set our initial parameters (basic uniforms)
+const vertexShaderID = (text) => {
+ const tag = document.createElement("script");
+    tag.setAttribute("type", "x-shader/x-vertex");
+    const tnode = document.createTextNode(text);
+    tag.appendChild(tnode);
     
-    /* Base */
-     /* canvas */
-            const canvas = document.querySelector('canvas')
-      // Scene
-      const scene = new THREE.Scene()
-    //   scene.fog = new THREE.Fog(0x000000,1,750)
-      
-    /* Material */
-          const material =  new THREE.MeshPhongMaterial({
-            color: 0xffffff,
-            flatShading: true,
-            })
+    document.head.appendChild(tag);
+    return tag.textContent;
+}
+const vertexShader = `
+    precision mediump float;
 
-    /* Object */
-      const object = new THREE.Group();
-      scene.add(object)
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
 
-    /* Box */
-    
-        const geometry = new THREE.BoxGeometry(100,100,100)
-        const cube = new THREE.Mesh(geometry, material)
-	
-        scene.add(cube)
-      
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
 
-    /* Sizes */
-            const sizes = {
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
-            window.addEventListener('resize', () =>
-            {
-                // Update sizes
-                sizes.width = window.innerWidth
-                sizes.height = window.innerHeight
-                // Update camera
-                camera.aspect = sizes.width / sizes.height
-                camera.updateProjectionMatrix()
-                // Update renderer
-                renderer.setSize(sizes.width, sizes.height)
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-            })
+    uniform mat4 uTextureMatrix0;
 
-          scene.add( new THREE.AmbientLight( 0xffffff ) );
+    varying vec3 vVertexPosition;
+    varying vec2 vTextureCoord;
+    void main() {
+      vec3 vertexPosition = aVertexPosition;
+      gl_Position = uPMatrix * uMVMatrix * vec4(vertexPosition, 1.0);
 
-				const light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 1, 1, 1 );
-				scene.add( light );
+      vTextureCoord = (uTextureMatrix0 * vec4(aTextureCoord, 0.0, 1.0)).xy;
+      vVertexPosition = vertexPosition;
+    }
+`;
 
 
-    /* Camera */
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1 ,10000
-      );
+const fragmentShader = `
+    precision mediump float;
 
-      let cameraPositionY = 100
-      camera.position.set(100,cameraPositionY,100)
-      camera.lookAt(1,1,1)
-    
-    
-    /*  Renderer */
-      const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        canvas, 
-      })
-      renderer.setSize(window.innerWidth, window.innerHeight)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-      renderer.setAnimationLoop( animation );
-      document.body.appendChild(renderer.domElement)
+    varying vec3 vVertexPosition;
+    varying vec2 vTextureCoord;
 
-      
-      
-      renderer.render(scene, camera)
-      
+    uniform float uTime;
 
-      /* PostProcessing */
-        // const composer =  new EffectComposer(renderer)
-        // composer.addPass(new RenderPass(scene, camera))
+    uniform sampler2D uSampler0;
+    void main() {
+      vec2 textureCoord = vTextureCoord;
+      textureCoord.x += sin(textureCoord.y * 25.0) * cos(textureCoord.x * 25.0) * (cos(uTime / 50.0)) / 25.0;
+      gl_FragColor = texture2D(uSampler0, textureCoord);
+    }
+`;
 
-        // const effect1 = new ShaderPass( DotScreenShader );
-		// 		effect1.uniforms[ 'scale' ].value = 8;
-		// 		composer.addPass( effect1 );
-        
-        // const effect2 = new ShaderPass( RGBShiftShader );
-		// 		effect2.uniforms[ 'amount' ].value = 0.015;
-		// 		composer.addPass( effect1 );
+const params = {
+vertexShaderID: vertexShader(vertexShaderID), // our vertex shader ID
+fragmentShaderID: fragmentShader(fragmentShaderID), // our fragment shader ID
+uniforms: {
+time: {
+name: "uTime", // uniform name that will be passed to our shaders
+type: "1f", // this means our uniform is a float
+value: 0,
+},
+},
+};
+// create our plane using our curtains object, the HTML element and the parameters
+const plane = new Plane(curtains, planeElement, params);
+plane.onRender(() => {
+// use the onRender method of our plane fired at each requestAnimationFrame call
+plane.uniforms.time.value++; // update our time uniform value
+});
+});
 
-      
-    /* Control */
-      const controls = new OrbitControls(camera, canvas)
-            controls.enableDamping = true
-            
-
-//controls.update() must be called after any manual changes to the camera's transform
-//camera.position.set( 0, 20, 100 );
-controls.update();
-
-
-            const stats = Stats()
-            document.body.appendChild(stats.dom)
-          
-
-
-            /* gsap animation */
-            
-
-             // animation
-
-            const clock = new THREE.Clock()
-            let previousTime = 0
-
-            function animation( time ) {
-
-            //écoulé
-            const elapsedTime = clock.getElapsedTime()
-            //time between now and last milisecond
-            const deltaTime = elapsedTime - previousTime
-            previousTime = elapsedTime
-                controls.update()
-                
-
-                 
-              object.rotation.x += 0.005;
-				      object.rotation.y += 0.01;
-              
-
-				    //   composer.render();
-              
-                
-              stats.update()
-                renderer.render( scene, camera );
-        
-            }
-
-      
-    },
+}
 
 }
 </script>
 
 <style scoped>
+body {
+/* make the body fits our viewport */
+position: relative;
+width: 100%;
+height: 100vh;
+margin: 0;
+overflow: hidden;
+}
+#canvas {
+/* make the canvas wrapper fits the document */
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+}
+.plane {
+/* define the size of your plane */
+width: 80%;
+height: 80vh;
+margin: 10vh auto;
+}
+.plane img {
+/* hide the img element */
+display: none;
+}
 
 </style>
+
+
 
